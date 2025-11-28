@@ -7,6 +7,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * Add configuration by habilitar CORS + desactivar CSRF
+ * */
 @Configuration
 public class SecurityConfig implements WebMvcConfigurer {
 
