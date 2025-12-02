@@ -14,8 +14,8 @@ public class ControlCollectionsFacade {
 
 	private final ControlCollectionsService controlCollectionsService;
 
-	public List<CollectionWebDto> findCollections(){
-		return ControlCollectionsMapper.MAPPER.toCollectionWebDto(controlCollectionsService.findCollections());
+	public List<CollectionWebDto> findCollections(String nameCollection, String editorial){
+		return ControlCollectionsMapper.MAPPER.toCollectionWebDto(controlCollectionsService.findCollections(nameCollection,editorial));
 	}
 
 

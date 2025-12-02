@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface ControlCollectionsService {
 
-	List<CollectionDto> findCollections();
+	List<CollectionDto> findCollections(String nameCollection, String editorial);
 
 }

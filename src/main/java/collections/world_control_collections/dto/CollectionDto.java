@@ -12,6 +12,7 @@ public class CollectionDto implements Serializable {
 	@Serial
 	private static final long serialVersionUID = -7957839091986419810L;
 
+	private Long id;
 	private String name;
 	private String type;
 	private String editorial;
