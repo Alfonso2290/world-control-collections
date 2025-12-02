@@ -12,7 +12,7 @@ public class UserController {
 
     private final UserFacade userFacade;
     @GetMapping("validate/user")
-    @CrossOrigin(origins = "http://localhost:8080")
+    //@CrossOrigin(origins = "http://localhost:8080")
     public UserResponseWebDto validateUser(@RequestParam("user") String user, @RequestParam("password") String password){
         return userFacade.validateUser(user,password);
     }
