@@ -1,6 +1,6 @@
 package collections.world_control_collections.service.impl;
 
-import collections.world_control_collections.dto.UserResponseDto;
+import collections.world_control_collections.dto.web.UserResponseWebDto;
 import collections.world_control_collections.entity.sql.User;
 import collections.world_control_collections.repository.sql.UserRepository;
 import collections.world_control_collections.service.UserService;
@@ -14,17 +14,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserResponseDto validateUser(String user, String password) {
+    public UserResponseWebDto validateUser(String user, String password) {
         User userEntity = userRepository.findByUsernameAndPassword(user, password);
 
-        UserResponseDto response = new UserResponseDto();
+        UserResponseWebDto response = new UserResponseWebDto();
         if(userEntity != null){
-            response.setMessage("Cuenta valida");
+            response.setMessage("Login exitoso");
             response.setStatus("200");
 
         }else{
-            response.setMessage("Cuenta invalida");
-            response.setStatus("500");
+            response.setMessage("Usuario y/o Contraseña erronea");
+            response.setStatus("404");
         }
         return response;
     }

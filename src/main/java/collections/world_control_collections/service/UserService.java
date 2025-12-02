@@ -1,7 +1,7 @@
 package collections.world_control_collections.service;
 
-import collections.world_control_collections.dto.UserResponseDto;
+import collections.world_control_collections.dto.web.UserResponseWebDto;
 
 public interface UserService {
-    UserResponseDto validateUser(String user, String password);
+    UserResponseWebDto validateUser(String user, String password);
 }
