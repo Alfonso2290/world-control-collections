@@ -1,6 +1,7 @@
 package collections.world_control_collections.controller;
 
 import collections.world_control_collections.dto.web.CollectionWebDto;
+import collections.world_control_collections.dto.web.ControlWebDto;
 import collections.world_control_collections.facade.ControlCollectionsFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,5 +22,10 @@ public class ControlCollectionsController {
     public List<CollectionWebDto> findCollections(@RequestParam(value = "name", required = false) String nameCollection,
                                                   @RequestParam(value = "editorial", required = false) String editorial){
         return controlCollectionsFacade.findCollections(nameCollection, editorial);
+    }
+
+    @GetMapping("collections-detail")
+    public List<ControlWebDto> findDetailCollections(@RequestParam(value = "collectionId") Long collectionId){
+        return controlCollectionsFacade.findDetailCollections(collectionId);
     }
 }

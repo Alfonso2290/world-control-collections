@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -24,4 +26,7 @@ public class Collection {
 	private String destiny;
 	private String form;
 	private String binder;
+
+	@OneToMany(mappedBy = "collection", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Control> controlList;
 }
