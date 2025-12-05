@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface ControlRepository extends JpaRepository<Control, Long> {
 
-	List<Control> findByCollection(Collection collection);
+	List<Control> findByCollectionOrderByType(Collection collection);
 }

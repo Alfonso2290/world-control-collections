@@ -28,7 +28,7 @@ public class ControlCollectionsServiceImpl implements ControlCollectionsService 
 	@Override
 	public List<ControlDto> findDetailCollections(Long collectionId) {
 		Collection collectionEntity = collectionRepository.findById(collectionId).orElse(null);
-		return ControlCollectionsMapper.MAPPER.toControlListDto(controlRepository.findByCollection(collectionEntity));
+		return ControlCollectionsMapper.MAPPER.toControlListDto(controlRepository.findByCollectionOrderByType(collectionEntity));
 	}
 
 	private  List<Collection> filterSearch(String nameCollection, String editorial){
