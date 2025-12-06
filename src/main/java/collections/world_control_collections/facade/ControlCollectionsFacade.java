@@ -23,4 +23,8 @@ public class ControlCollectionsFacade {
 		return ControlCollectionsMapper.MAPPER.toControlWebDto(controlCollectionsService.findDetailCollections(collectionId));
 	}
 
+	public void saveCollections(CollectionWebDto collectionWebDto){
+		controlCollectionsService.saveCollections(ControlCollectionsMapper.MAPPER.getCollectionDto(collectionWebDto));
+	}
+
 }
