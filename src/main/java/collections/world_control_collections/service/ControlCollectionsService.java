@@ -11,4 +11,6 @@ public interface ControlCollectionsService {
 
 	List<ControlDto> findDetailCollections(Long collectionId);
 
+	void saveCollections(CollectionDto collectionDto);
+
 }

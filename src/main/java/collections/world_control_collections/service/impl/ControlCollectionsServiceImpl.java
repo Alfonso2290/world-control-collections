@@ -31,6 +31,11 @@ public class ControlCollectionsServiceImpl implements ControlCollectionsService 
 		return ControlCollectionsMapper.MAPPER.toControlListDto(controlRepository.findByCollectionOrderByType(collectionEntity));
 	}
 
+	@Override
+	public void saveCollections(CollectionDto collectionDto) {
+		collectionRepository.save(ControlCollectionsMapper.MAPPER.toCollection(collectionDto));
+	}
+
 	private  List<Collection> filterSearch(String nameCollection, String editorial){
 		if(Objects.nonNull(nameCollection) && Objects.nonNull(editorial)){
 			return collectionRepository.findByNameLikeAndEditorial("%" + nameCollection + "%", editorial);

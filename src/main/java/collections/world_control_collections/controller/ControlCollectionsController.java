@@ -4,10 +4,7 @@ import collections.world_control_collections.dto.web.CollectionWebDto;
 import collections.world_control_collections.dto.web.ControlWebDto;
 import collections.world_control_collections.facade.ControlCollectionsFacade;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +24,10 @@ public class ControlCollectionsController {
     @GetMapping("collections-detail")
     public List<ControlWebDto> findDetailCollections(@RequestParam(value = "collectionId") Long collectionId){
         return controlCollectionsFacade.findDetailCollections(collectionId);
+    }
+
+    @PostMapping("save/collections")
+    public void saveCollections(@RequestBody CollectionWebDto collectionWebDto){
+        controlCollectionsFacade.saveCollections(collectionWebDto);
     }
 }

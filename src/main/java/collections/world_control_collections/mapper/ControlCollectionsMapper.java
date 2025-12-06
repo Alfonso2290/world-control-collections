@@ -34,4 +34,20 @@ public interface ControlCollectionsMapper {
 	List<ControlWebDto> toControlWebDto(List<ControlDto> controlDtoList);
 
 	List<ControlDto> toControlListDto(List<Control> controlList);
+
+	@Mapping(target = "status", source = "status", qualifiedByName = "mappingStatus")
+	@Mapping(target = "binder", source = "binder", qualifiedByName = "mappingBinder")
+	CollectionDto getCollectionDto(CollectionWebDto collectionWebDto);
+
+	@Named("mappingStatus")
+	default String mappingStatus(String status){
+		return StatusType.getValueFromDescription(status).name();
+	}
+
+	@Named("mappingBinder")
+	default String mappingBinder(String binder){
+		return "Si".equals(binder)? "S" : "N";
+	}
+
+	Collection toCollection(CollectionDto collectionDto);
 }
