@@ -8,7 +8,8 @@ import java.util.Arrays;
 public enum StatusType {
 	C("Completo"),
 	I("Incompleto"),
-	NA("Pendiente apertura");
+	NA("Pendiente apertura"),
+	M("Solo Mejora");
 
 	public final String description;
 
