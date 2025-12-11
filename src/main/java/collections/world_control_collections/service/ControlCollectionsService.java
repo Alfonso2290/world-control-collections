@@ -13,4 +13,6 @@ public interface ControlCollectionsService {
 
 	void saveCollections(CollectionDto collectionDto);
 
+	void saveControlCollections(List<ControlDto> controlDtoList);
+
 }
