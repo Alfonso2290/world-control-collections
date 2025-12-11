@@ -21,7 +21,6 @@ public class ControlCollectionsController {
         return controlCollectionsFacade.findCollections(nameCollection, editorial);
     }
 
-    /**Pendiente: Traer info de forma ordenada ascendentemente*/
     @GetMapping("collections-detail")
     public List<ControlWebDto> findDetailCollections(@RequestParam(value = "collectionId") Long collectionId){
         return controlCollectionsFacade.findDetailCollections(collectionId);

@@ -11,8 +11,12 @@ import collections.world_control_collections.service.ControlCollectionsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +32,14 @@ public class ControlCollectionsServiceImpl implements ControlCollectionsService 
 
 	@Override
 	public List<ControlDto> findDetailCollections(Long collectionId) {
-		Collection collectionEntity = collectionRepository.findById(collectionId).orElse(null);
-		return ControlCollectionsMapper.MAPPER.toControlListDto(controlRepository.findByCollectionOrderByType(collectionEntity));
+		List<ControlDto> controlNumeric = ControlCollectionsMapper.MAPPER.toControlListDto(controlRepository.findControlByNumerationNumeric(collectionId));
+		List<ControlDto> controlAlphaNumeric = ControlCollectionsMapper.MAPPER.toControlListDto(controlRepository.findControlByNumerationAlphaNumeric(collectionId));
+
+		List<ControlDto> responseControl=new ArrayList<>();
+		responseControl.addAll(controlNumeric);
+		responseControl.addAll(controlAlphaNumeric);
+
+		return responseControl.stream().sorted(Comparator.comparing(ControlDto::getType)).collect(Collectors.toList());
 	}
 
 	@Override
