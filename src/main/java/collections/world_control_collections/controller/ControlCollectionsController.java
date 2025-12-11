@@ -21,6 +21,7 @@ public class ControlCollectionsController {
         return controlCollectionsFacade.findCollections(nameCollection, editorial);
     }
 
+    /**Pendiente: Traer info de forma ordenada ascendentemente*/
     @GetMapping("collections-detail")
     public List<ControlWebDto> findDetailCollections(@RequestParam(value = "collectionId") Long collectionId){
         return controlCollectionsFacade.findDetailCollections(collectionId);
@@ -29,5 +30,10 @@ public class ControlCollectionsController {
     @PostMapping("save/collections")
     public void saveCollections(@RequestBody CollectionWebDto collectionWebDto){
         controlCollectionsFacade.saveCollections(collectionWebDto);
+    }
+
+    @PostMapping("save/control-collections")
+    public void saveControlCollections(@RequestBody List<ControlWebDto> controlWebDtoList){
+        controlCollectionsFacade.saveControlCollections(controlWebDtoList);
     }
 }

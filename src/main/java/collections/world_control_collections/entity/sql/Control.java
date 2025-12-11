@@ -17,7 +17,7 @@ public class Control {
 	private Long id;
 
 	private String type;
-	private Integer numeration;
+	private String numeration;
 	private String status;
 
 	@JoinColumn(name = "collectionId", referencedColumnName = "id")

@@ -50,4 +50,8 @@ public interface ControlCollectionsMapper {
 	}
 
 	Collection toCollection(CollectionDto collectionDto);
+
+	List<ControlDto> toControlDtoList(List<ControlWebDto> controlWebDtoList);
+
+	List<Control> toControlList(List<ControlDto> controlDtoList);
 }

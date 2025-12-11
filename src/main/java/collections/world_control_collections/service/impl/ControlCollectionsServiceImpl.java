@@ -3,6 +3,7 @@ package collections.world_control_collections.service.impl;
 import collections.world_control_collections.dto.CollectionDto;
 import collections.world_control_collections.dto.ControlDto;
 import collections.world_control_collections.entity.sql.Collection;
+import collections.world_control_collections.entity.sql.Control;
 import collections.world_control_collections.mapper.ControlCollectionsMapper;
 import collections.world_control_collections.repository.sql.CollectionRepository;
 import collections.world_control_collections.repository.sql.ControlRepository;
@@ -34,6 +35,15 @@ public class ControlCollectionsServiceImpl implements ControlCollectionsService 
 	@Override
 	public void saveCollections(CollectionDto collectionDto) {
 		collectionRepository.save(ControlCollectionsMapper.MAPPER.toCollection(collectionDto));
+	}
+
+	@Override
+	public void saveControlCollections(List<ControlDto> controlDtoList) {
+		Collection collectionEntity = collectionRepository.findById(controlDtoList.get(0).getCollectionId())
+										.orElse(null);
+		List<Control> controlEntities = ControlCollectionsMapper.MAPPER.toControlList(controlDtoList);
+		controlEntities.forEach(control -> control.setCollection(collectionEntity));
+		controlRepository.saveAll(controlEntities);
 	}
 
 	private  List<Collection> filterSearch(String nameCollection, String editorial){

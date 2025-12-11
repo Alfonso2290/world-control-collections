@@ -12,6 +12,7 @@ public class ControlDto implements Serializable {
 
 	private Long id;
 	private String type;
-	private Integer numeration;
+	private String numeration;
 	private String status;
+	private Long collectionId;
 }
