@@ -35,4 +35,10 @@ public class ControlCollectionsController {
     public void saveControlCollections(@RequestBody List<ControlWebDto> controlWebDtoList){
         controlCollectionsFacade.saveControlCollections(controlWebDtoList);
     }
+
+    /**Momentaneamente solo actualizará un solo control**/
+    @PutMapping("update/control-collections")
+    public void updateControlCollections(@RequestBody ControlWebDto controlWebDto){
+        controlCollectionsFacade.updateControlCollections(controlWebDto);
+    }
 }

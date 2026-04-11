@@ -54,4 +54,6 @@ public interface ControlCollectionsMapper {
 	List<ControlDto> toControlDtoList(List<ControlWebDto> controlWebDtoList);
 
 	List<Control> toControlList(List<ControlDto> controlDtoList);
+
+	ControlDto toControlDto(ControlWebDto controlWebDto);
 }

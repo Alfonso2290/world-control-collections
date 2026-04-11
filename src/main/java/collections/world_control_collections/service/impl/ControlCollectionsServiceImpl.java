@@ -56,6 +56,20 @@ public class ControlCollectionsServiceImpl implements ControlCollectionsService 
 		controlRepository.saveAll(controlEntities);
 	}
 
+	/**PENDIENTE: : SI ES NOLA PERSISTIR EN LA TABLA MISSING**/
+	@Override
+	public void updateControlCollections(ControlDto controlDto) {
+		Control controlEntity = Objects.nonNull(controlDto.getType()) ?
+				controlRepository.findByTypeAndNumerationAndType(controlDto.getCollectionId(), controlDto.getNumeration(), controlDto.getType())
+						.orElse(null):
+				controlRepository.findByTypeAndNumeration(controlDto.getCollectionId(), controlDto.getNumeration())
+						.orElse(null);
+		if(Objects.nonNull(controlEntity)){
+			controlEntity.setStatus(controlDto.getStatus());
+			controlRepository.save(controlEntity);
+		}
+	}
+
 	private  List<Collection> filterSearch(String nameCollection, String editorial){
 		if(Objects.nonNull(nameCollection) && Objects.nonNull(editorial)){
 			return collectionRepository.findByNameLikeAndEditorial("%" + nameCollection + "%", editorial);
