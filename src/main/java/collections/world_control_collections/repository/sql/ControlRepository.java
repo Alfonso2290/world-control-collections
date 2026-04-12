@@ -25,10 +25,10 @@ public interface ControlRepository extends JpaRepository<Control, Long> {
 	@Query(value="Select a from Control a " +
 	       "JOIN FETCH a.collection b " +
 	       "WHERE b.id= :paramId AND a.numeration= :paramNumeration AND a.type= :paramType")
-	Optional<Control> findByTypeAndNumerationAndType(@Param("paramId") Long paramId, @Param("paramNumeration") String paramNumeration, @Param("paramType") String paramType);
+	Control findByTypeAndNumerationAndType(@Param("paramId") Long paramId, @Param("paramNumeration") String paramNumeration, @Param("paramType") String paramType);
 
 	@Query(value="Select a from Control a " +
 			"JOIN FETCH a.collection b " +
 			"WHERE b.id= :paramId AND a.numeration= :paramNumeration")
-	Optional<Control> findByTypeAndNumeration(@Param("paramId") Long paramId, @Param("paramNumeration") String paramNumeration);
+	Control findByTypeAndNumeration(@Param("paramId") Long paramId, @Param("paramNumeration") String paramNumeration);
 }

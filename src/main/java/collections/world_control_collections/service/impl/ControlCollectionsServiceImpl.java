@@ -4,9 +4,11 @@ import collections.world_control_collections.dto.CollectionDto;
 import collections.world_control_collections.dto.ControlDto;
 import collections.world_control_collections.entity.sql.Collection;
 import collections.world_control_collections.entity.sql.Control;
+import collections.world_control_collections.entity.sql.Missing;
 import collections.world_control_collections.mapper.ControlCollectionsMapper;
 import collections.world_control_collections.repository.sql.CollectionRepository;
 import collections.world_control_collections.repository.sql.ControlRepository;
+import collections.world_control_collections.repository.sql.MissingRepository;
 import collections.world_control_collections.service.ControlCollectionsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class ControlCollectionsServiceImpl implements ControlCollectionsService 
 
 	private final CollectionRepository collectionRepository;
 	private final ControlRepository controlRepository;
+	private final MissingRepository missingRepository;
 
 	@Override
 	public List<CollectionDto> findCollections(String nameCollection, String editorial) {
@@ -56,18 +59,25 @@ public class ControlCollectionsServiceImpl implements ControlCollectionsService 
 		controlRepository.saveAll(controlEntities);
 	}
 
-	/**PENDIENTE: : SI ES NOLA PERSISTIR EN LA TABLA MISSING**/
 	@Override
 	public void updateControlCollections(ControlDto controlDto) {
 		Control controlEntity = Objects.nonNull(controlDto.getType()) ?
 				controlRepository.findByTypeAndNumerationAndType(controlDto.getCollectionId(), controlDto.getNumeration(), controlDto.getType())
-						.orElse(null):
-				controlRepository.findByTypeAndNumeration(controlDto.getCollectionId(), controlDto.getNumeration())
-						.orElse(null);
+						:controlRepository.findByTypeAndNumeration(controlDto.getCollectionId(), controlDto.getNumeration());
 		if(Objects.nonNull(controlEntity)){
 			controlEntity.setStatus(controlDto.getStatus());
 			controlRepository.save(controlEntity);
+			if("N".equals(controlDto.getStatus()) || "M".equals(controlDto.getStatus())) {
+				this.saveMissingControlCollections(controlDto, controlEntity.getCollection(), controlEntity.getType());
+			}
 		}
+	}
+
+	private void saveMissingControlCollections(ControlDto controlDto, Collection collection, String type){
+		Missing missingEntity = ControlCollectionsMapper.MAPPER.toMissing(controlDto);
+		missingEntity.setType(type);
+		missingEntity.setCollection(collection);
+		missingRepository.save(missingEntity);
 	}
 
 	private  List<Collection> filterSearch(String nameCollection, String editorial){
