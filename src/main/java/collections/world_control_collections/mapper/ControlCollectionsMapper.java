@@ -58,5 +58,7 @@ public interface ControlCollectionsMapper {
 
 	ControlDto toControlDto(ControlWebDto controlWebDto);
 
+	@Mapping(target = "numeration", ignore = true)
+	@Mapping(target = "type", ignore = true)
 	Missing toMissing(ControlDto controlDto);
 }

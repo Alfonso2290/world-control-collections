@@ -13,11 +13,7 @@ import collections.world_control_collections.service.ControlCollectionsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,22 +57,39 @@ public class ControlCollectionsServiceImpl implements ControlCollectionsService 
 
 	@Override
 	public void updateControlCollections(ControlDto controlDto) {
+		if(Objects.nonNull(controlDto) && controlDto.getNumeration().contains(",")){
+			updateManyRegisterControlCollections(controlDto);
+		}else {
+			updateOneRegisterControlCollections(controlDto, controlDto.getNumeration());
+		}
+
+	}
+
+	public void updateManyRegisterControlCollections(ControlDto controlDto){
+		List<String> listAllElements = Arrays.stream(controlDto.getNumeration().split(","))
+				.map(String::trim)
+				.collect(Collectors.toList());
+		listAllElements.forEach(numeration -> updateOneRegisterControlCollections(controlDto, numeration));
+	}
+
+	public void updateOneRegisterControlCollections(ControlDto controlDto, String numeration){
 		Control controlEntity = Objects.nonNull(controlDto.getType()) ?
-				controlRepository.findByTypeAndNumerationAndType(controlDto.getCollectionId(), controlDto.getNumeration(), controlDto.getType())
-						:controlRepository.findByTypeAndNumeration(controlDto.getCollectionId(), controlDto.getNumeration());
+				controlRepository.findByTypeAndNumerationAndType(controlDto.getCollectionId(), numeration, controlDto.getType())
+				:controlRepository.findByTypeAndNumeration(controlDto.getCollectionId(), numeration);
 		if(Objects.nonNull(controlEntity)){
 			controlEntity.setStatus(controlDto.getStatus());
 			controlRepository.save(controlEntity);
 			if("N".equals(controlDto.getStatus()) || "M".equals(controlDto.getStatus())) {
-				this.saveMissingControlCollections(controlDto, controlEntity.getCollection(), controlEntity.getType());
+				this.saveMissingControlCollections(controlDto, controlEntity.getCollection(), controlEntity.getType(), numeration);
 			}
 		}
 	}
 
-	private void saveMissingControlCollections(ControlDto controlDto, Collection collection, String type){
+	private void saveMissingControlCollections(ControlDto controlDto, Collection collection, String type, String numeration){
 		Missing missingEntity = ControlCollectionsMapper.MAPPER.toMissing(controlDto);
 		missingEntity.setType(type);
 		missingEntity.setCollection(collection);
+		missingEntity.setNumeration(numeration);
 		missingRepository.save(missingEntity);
 	}
 
