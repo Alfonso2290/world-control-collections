@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ControlRepository extends JpaRepository<Control, Long> {
@@ -20,4 +21,14 @@ public interface ControlRepository extends JpaRepository<Control, Long> {
 			" where collectionId=:collectionId and numeration LIKE '[A-Z]%' " +
 			" order by type asc,cast(SUBSTRING(numeration, 2, LEN(numeration))as int) asc",  nativeQuery = true)
 	List<Control> findControlByNumerationAlphaNumeric(@Param("collectionId") Long collectionId);
+
+	@Query(value="Select a from Control a " +
+	       "JOIN FETCH a.collection b " +
+	       "WHERE b.id= :paramId AND a.numeration= :paramNumeration AND a.type= :paramType")
+	Control findByTypeAndNumerationAndType(@Param("paramId") Long paramId, @Param("paramNumeration") String paramNumeration, @Param("paramType") String paramType);
+
+	@Query(value="Select a from Control a " +
+			"JOIN FETCH a.collection b " +
+			"WHERE b.id= :paramId AND a.numeration= :paramNumeration")
+	Control findByTypeAndNumeration(@Param("paramId") Long paramId, @Param("paramNumeration") String paramNumeration);
 }

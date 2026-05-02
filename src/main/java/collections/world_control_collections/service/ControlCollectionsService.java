@@ -15,4 +15,6 @@ public interface ControlCollectionsService {
 
 	void saveControlCollections(List<ControlDto> controlDtoList);
 
+	void updateControlCollections(ControlDto controlDto);
+
 }

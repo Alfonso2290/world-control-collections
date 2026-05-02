@@ -4,18 +4,16 @@ import collections.world_control_collections.dto.CollectionDto;
 import collections.world_control_collections.dto.ControlDto;
 import collections.world_control_collections.entity.sql.Collection;
 import collections.world_control_collections.entity.sql.Control;
+import collections.world_control_collections.entity.sql.Missing;
 import collections.world_control_collections.mapper.ControlCollectionsMapper;
 import collections.world_control_collections.repository.sql.CollectionRepository;
 import collections.world_control_collections.repository.sql.ControlRepository;
+import collections.world_control_collections.repository.sql.MissingRepository;
 import collections.world_control_collections.service.ControlCollectionsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +22,7 @@ public class ControlCollectionsServiceImpl implements ControlCollectionsService 
 
 	private final CollectionRepository collectionRepository;
 	private final ControlRepository controlRepository;
+	private final MissingRepository missingRepository;
 
 	@Override
 	public List<CollectionDto> findCollections(String nameCollection, String editorial) {
@@ -54,6 +53,44 @@ public class ControlCollectionsServiceImpl implements ControlCollectionsService 
 		List<Control> controlEntities = ControlCollectionsMapper.MAPPER.toControlList(controlDtoList);
 		controlEntities.forEach(control -> control.setCollection(collectionEntity));
 		controlRepository.saveAll(controlEntities);
+	}
+
+	@Override
+	public void updateControlCollections(ControlDto controlDto) {
+		if(Objects.nonNull(controlDto) && controlDto.getNumeration().contains(",")){
+			updateManyRegisterControlCollections(controlDto);
+		}else {
+			updateOneRegisterControlCollections(controlDto, controlDto.getNumeration());
+		}
+
+	}
+
+	public void updateManyRegisterControlCollections(ControlDto controlDto){
+		List<String> listAllElements = Arrays.stream(controlDto.getNumeration().split(","))
+				.map(String::trim)
+				.collect(Collectors.toList());
+		listAllElements.forEach(numeration -> updateOneRegisterControlCollections(controlDto, numeration));
+	}
+
+	public void updateOneRegisterControlCollections(ControlDto controlDto, String numeration){
+		Control controlEntity = Objects.nonNull(controlDto.getType()) ?
+				controlRepository.findByTypeAndNumerationAndType(controlDto.getCollectionId(), numeration, controlDto.getType())
+				:controlRepository.findByTypeAndNumeration(controlDto.getCollectionId(), numeration);
+		if(Objects.nonNull(controlEntity)){
+			controlEntity.setStatus(controlDto.getStatus());
+			controlRepository.save(controlEntity);
+			if("N".equals(controlDto.getStatus()) || "M".equals(controlDto.getStatus())) {
+				this.saveMissingControlCollections(controlDto, controlEntity.getCollection(), controlEntity.getType(), numeration);
+			}
+		}
+	}
+
+	private void saveMissingControlCollections(ControlDto controlDto, Collection collection, String type, String numeration){
+		Missing missingEntity = ControlCollectionsMapper.MAPPER.toMissing(controlDto);
+		missingEntity.setType(type);
+		missingEntity.setCollection(collection);
+		missingEntity.setNumeration(numeration);
+		missingRepository.save(missingEntity);
 	}
 
 	private  List<Collection> filterSearch(String nameCollection, String editorial){

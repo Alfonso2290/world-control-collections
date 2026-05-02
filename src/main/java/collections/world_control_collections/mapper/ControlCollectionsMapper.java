@@ -3,6 +3,7 @@ package collections.world_control_collections.mapper;
 import collections.world_control_collections.dto.ControlDto;
 import collections.world_control_collections.dto.web.ControlWebDto;
 import collections.world_control_collections.entity.sql.Control;
+import collections.world_control_collections.entity.sql.Missing;
 import collections.world_control_collections.util.StatusType;
 import collections.world_control_collections.dto.CollectionDto;
 import collections.world_control_collections.dto.web.CollectionWebDto;
@@ -54,4 +55,10 @@ public interface ControlCollectionsMapper {
 	List<ControlDto> toControlDtoList(List<ControlWebDto> controlWebDtoList);
 
 	List<Control> toControlList(List<ControlDto> controlDtoList);
+
+	ControlDto toControlDto(ControlWebDto controlWebDto);
+
+	@Mapping(target = "numeration", ignore = true)
+	@Mapping(target = "type", ignore = true)
+	Missing toMissing(ControlDto controlDto);
 }

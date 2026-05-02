@@ -31,4 +31,8 @@ public class ControlCollectionsFacade {
 		controlCollectionsService.saveControlCollections(ControlCollectionsMapper.MAPPER.toControlDtoList(controlWebDtoList));
 	}
 
+	public void updateControlCollections(ControlWebDto controlWebDto){
+		controlCollectionsService.updateControlCollections(ControlCollectionsMapper.MAPPER.toControlDto(controlWebDto));
+	}
+
 }
