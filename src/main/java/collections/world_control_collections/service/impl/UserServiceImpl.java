@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -32,10 +34,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUser(String user, String password) {
+    public Boolean saveUser(String user, String password) {
+        User validateUserName = userRepository.findByUsername(user);
+
+        if(Objects.nonNull(validateUserName) && validateUserName.getUsername().equals(user)){
+            return Boolean.FALSE;
+        }
+
         User userEntity = new User();
         userEntity.setUsername(user);
         userEntity.setPassword(password);
         userRepository.save(userEntity);
+
+        return Boolean.TRUE;
     }
 }

@@ -4,5 +4,5 @@ import collections.world_control_collections.dto.web.UserResponseWebDto;
 
 public interface UserService {
     UserResponseWebDto validateUser(String user, String password);
-    void saveUser(String user, String password);
+    Boolean saveUser(String user, String password);
 }

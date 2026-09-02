@@ -15,7 +15,7 @@ public class UserFacade {
         return userService.validateUser(user, password);
     }
 
-    public void saveUser(String userName, String password){
-        userService.saveUser(userName, password);
+    public Boolean saveUser(String userName, String password){
+        return userService.saveUser(userName, password);
     }
 }

@@ -19,7 +19,7 @@ public class UserController {
 
 
     @PostMapping("/save")
-    public void saveUser(@RequestParam("user") String user, @RequestParam("password") String password){
-        userFacade.saveUser(user, password);
+    public Boolean saveUser(@RequestParam("user") String user, @RequestParam("password") String password){
+        return userFacade.saveUser(user, password);
     }
 }
