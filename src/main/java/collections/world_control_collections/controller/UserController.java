@@ -16,4 +16,10 @@ public class UserController {
     public UserResponseWebDto validateUser(@RequestParam("user") String user, @RequestParam("password") String password){
         return userFacade.validateUser(user,password);
     }
+
+
+    @PostMapping("/save")
+    public void saveUser(@RequestParam("user") String user, @RequestParam("password") String password){
+        userFacade.saveUser(user, password);
+    }
 }

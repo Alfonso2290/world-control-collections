@@ -14,4 +14,8 @@ public class UserFacade {
     public UserResponseWebDto validateUser(String user, String password){
         return userService.validateUser(user, password);
     }
+
+    public void saveUser(String userName, String password){
+        userService.saveUser(userName, password);
+    }
 }

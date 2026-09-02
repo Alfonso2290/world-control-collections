@@ -6,6 +6,7 @@ import collections.world_control_collections.repository.sql.UserRepository;
 import collections.world_control_collections.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,5 +28,14 @@ public class UserServiceImpl implements UserService {
             response.setStatus("404");
         }
         return response;
+    }
+
+    @Override
+    @Transactional
+    public void saveUser(String user, String password) {
+        User userEntity = new User();
+        userEntity.setUsername(user);
+        userEntity.setPassword(password);
+        userRepository.save(userEntity);
     }
 }
