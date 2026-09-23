@@ -6,17 +6,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user/")
+@RequestMapping("/world-control-collections/user/")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserFacade userFacade;
+
     @GetMapping("validate/user")
     //@CrossOrigin(origins = "http://localhost:8080")
     public UserResponseWebDto validateUser(@RequestParam("user") String user, @RequestParam("password") String password){
         return userFacade.validateUser(user,password);
     }
-
 
     @PostMapping("/save")
     public Boolean saveUser(@RequestParam("user") String user, @RequestParam("password") String password){

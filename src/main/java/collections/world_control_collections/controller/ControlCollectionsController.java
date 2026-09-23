@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/control/")
+@RequestMapping("/world-control-collections/control/")
 @RequiredArgsConstructor
 public class ControlCollectionsController {
 
